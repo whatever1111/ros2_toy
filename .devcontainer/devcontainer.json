@@ -8,7 +8,10 @@
             "USERNAME": "A"
         }
     },
-    "settings": {
+    "features": {
+        "git": "latest"
+    },
+    "customization/vscode/settings": {
         "remote.SSH.remotePlatform": {
             "frp-fox.top": "linux"
         },
@@ -32,7 +35,7 @@
             "--error-exitcode=1",
             "--std=c++17",
             "--enable=warning,style,performance,portability",
-            "--inline-suppressions",
+            //"--inline-suppressions",
             "--suppress=missingIncludeSystem",
             "--suppress=unmatchedSuppression"
         ],
