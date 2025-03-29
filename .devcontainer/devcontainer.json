@@ -1,0 +1,95 @@
+{
+    "name": "ROS 2 Development Container",
+    "privileged": true,
+    "remoteUser": "A",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USERNAME": "A"
+        }
+    },
+    "settings": {
+        "remote.SSH.remotePlatform": {
+            "frp-fox.top": "linux"
+        },
+        "Codegeex.Privacy": true,
+        "git.openRepositoryInParentFolders": "always",
+        "c-cpp-flylint.webQueryMatchSet": [
+            "misra-"
+        ],
+        "c-cpp-flylint.cppcheck.enable": true,
+        "c-cpp-flylint.cppcheck.executable": "cppcheck",
+        "c-cpp-flylint.cppcheck.standard": [
+            "c++17"
+        ],
+        "c-cpp-flylint.cppcheck.includePaths": [
+            "${workspaceFolder}/**",
+            "/opt/ros/jazzy/include/**"
+        ],
+        "c-cpp-flylint.cppcheck.language": "c++",
+        "c-cpp-flylint.cppcheck.platform": "unix64",
+        "c-cpp-flylint.cppcheck.extraArgs": [
+            "--error-exitcode=1",
+            "--std=c++17",
+            "--enable=warning,style,performance,portability",
+            "--inline-suppressions",
+            "--suppress=missingIncludeSystem",
+            "--suppress=unmatchedSuppression"
+        ],
+        "c-cpp-flylint.cppcheck.severityLevels": {
+            "error": "Error",
+            "warning": "Warning",
+            "style": "Information",
+            "performance": "Information",
+            "portability": "Information",
+            "information": "Information"
+        },
+        "c-cpp-flylint.run": "onType",
+        "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+        "C_Cpp.codeAnalysis.clangTidy.path": "/usr/bin/clang-tidy",
+        "editor.formatOnSave": true,
+        "C_Cpp.formatting": "clangFormat"
+    },
+    "workspaceFolder": "/home/ws",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ws,type=bind",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-themes",
+                "ms-vscode.cpptools-extension-pack", // cpp插件
+                "ms-azuretools.vscode-docker", // docker插件
+                "parasoft.vscode-cpptest", // cpp测试插件
+                "twxs.cmake",
+                "donjayamanne.python-extension-pack",
+                "jbenden.c-cpp-flylint", //cpp linter 插件
+                "eamodio.gitlens",
+                "ms-iot.vscode-ros"
+            ]
+        }
+    },
+    "containerEnv": {
+        "DISPLAY": "unix:0",
+        "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
+        "ROS_DOMAIN_ID": "42"
+        //"HTTP_PROXY": "http://127.0.0.1:7890",
+        //"HTTPS_PROXY": "http://127.0.0.1:7890"
+    },
+    "runArgs": [
+        "--dns=127.0.0.1",
+        "--dns",
+        "8.8.8.8",
+        "--dns",
+        "8.8.4.4",
+        "--net=host",
+        "--pid=host",
+        "--ipc=host",
+        "-e",
+        "DISPLAY=${env:DISPLAY}"
+    ],
+    "mounts": [
+        //"source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
+        //"source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
+    ],
+    "postCreateCommand": "/bin/bash -c \"HOST_IP=$(grep -m 1 host.docker.internal /etc/hosts | awk '{print $1}')  && echo '$HOST_IP host.docker.internal' | sudo tee -a /etc/hosts && echo 'source /opt/ros/jazzy/setup.bash' >> ~/.bashrc && echo 'export DISPLAY=192.168.0.100:0.0' >> ~/.bashrc && sudo rosdep fix-permissions && rosdep update && sudo rosdep install --from-paths src --ignore-src -y && sudo chown -R $(whoami) /home/ws/\""
+}
