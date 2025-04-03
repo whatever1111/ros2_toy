@@ -1,3 +1,8 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "cmake.sourceDirectory": "/home/ws/src/my_package",
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        "new": "cpp"
+    }
 }
